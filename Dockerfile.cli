@@ -6,6 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY cli/ ./cli/
-COPY cli.py .
+COPY setup.py .
+RUN pip install -e .
 
 CMD ["tail", "-f", "/dev/null"]

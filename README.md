@@ -4,17 +4,18 @@ A FastAPI backend service and CLI client for exploring the Star Wars API (SWAPI)
 
 ## Features
 
-- FastAPI service with `/people` and `/planets` endpoints
-- Query parameters: pagination, search, sorting
-- CLI client with rich table output and loading spinners
-- Docker support with environment variables
-- Bonus AI insight endpoint
-- Request logging and monitoring
-- Unit tests included
+-   FastAPI service with `/people` and `/planets` endpoints
+-   Query parameters: pagination, search, sorting
+-   CLI client with rich table output and loading spinners
+-   Docker support with environment variables
+-   Bonus AI insight endpoint
+-   Request logging and monitoring
+-   Unit tests included
 
 ## Setup
 
 1. Copy environment file:
+
 ```bash
 cp .env.example .env
 ```
@@ -22,11 +23,13 @@ cp .env.example .env
 ### Local Development
 
 2. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 3. Run the FastAPI server:
+
 ```bash
 uvicorn app.main:app --reload
 ```
@@ -35,36 +38,38 @@ uvicorn app.main:app --reload
 
 ### Docker
 
-2. Build and run with docker-compose:
+2. Build and run with Docker Compose:
+
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 3. Service available on http://localhost:6969
 
 4. Run CLI with Docker:
+
 ```bash
 # Option 1: Direct commands
-docker-compose run --rm starwars-cli python cli.py people
+docker compose run --rm starwars-cli starwars people
 
 # Option 2: Start CLI service and exec
-docker-compose --profile cli up -d
-docker-compose exec starwars-cli python cli.py people
+docker compose --profile cli up -d
+docker compose exec starwars-cli starwars people
 ```
 
 ## API Usage
 
 ### Endpoints
 
-- `GET /people` - List Star Wars characters
-- `GET /planets` - List Star Wars planets
-- `GET /simulate-ai-insight` - Get AI insights (bonus)
+-   `GET /people` - List Star Wars characters
+-   `GET /planets` - List Star Wars planets
+-   `GET /simulate-ai-insight` - Get AI insights (bonus)
 
 ### Query Parameters
 
-- `page` (int): Page number (default: 1)
-- `search` (str): Search by name (case-insensitive)
-- `sort_by` (str): Sort by field (name, created, edited)
+-   `page` (int): Page number (default: 1)
+-   `search` (str): Search by name (case-insensitive)
+-   `sort_by` (str): Sort by field (name, created, edited)
 
 ### Examples
 
@@ -94,36 +99,36 @@ pip install -e .
 
 ```bash
 # List people
-python cli.py people
+starwars people
 
 # Search people
-python cli.py people --search "luke"
+starwars people --search "luke"
 
 # List planets with pagination
-python cli.py planets --page 2
+starwars planets --page 2
 
 # Sort people by name (descending)
-python cli.py people --sort-by name --order desc
+starwars people --sort-by name --order desc
 
 # List planets with search and sort
-python cli.py planets --search "desert" --sort-by name
+starwars planets --search "desert" --sort-by name
 ```
 
 ### CLI Options
 
-- `--page, -p`: Page number
-- `--search, -s`: Search term
-- `--sort-by`: Sort field (name, created, edited)
-- `--order, -o`: Sort order (asc, desc)
+-   `--page, -p`: Page number
+-   `--search, -s`: Search term
+-   `--sort-by`: Sort field (name, created, edited)
+-   `--order, -o`: Sort order (asc, desc)
 
 ## Environment Variables
 
 Copy `.env.example` to `.env` and configure:
 
-- `SWAPI_BASE_URL`: Base URL for SWAPI (default: https://swapi.dev/api)
-- `API_BASE_URL`: Base URL for local API (default: http://localhost:8000)
-- `EXTERNAL_PORT`: External port for Docker (default: 6969)
-- `INTERNAL_PORT`: Internal port for FastAPI (default: 8000)
+-   `SWAPI_BASE_URL`: Base URL for SWAPI (default: https://swapi.dev/api)
+-   `API_BASE_URL`: Base URL for local API (default: http://localhost:8000)
+-   `EXTERNAL_PORT`: External port for Docker (default: 6969)
+-   `INTERNAL_PORT`: Internal port for FastAPI (default: 8000)
 
 ## Development
 
@@ -134,11 +139,11 @@ Visit http://localhost:8000/docs for interactive API documentation.
 ### Testing
 
 ```bash
-# Install test dependencies
-pip install pytest pytest-asyncio
+# Run tests with the provided script
+./run_tests.sh
 
-# Run tests
-pytest tests/
+# Or manually
+python -m pytest tests/ -v
 ```
 
 ### Project Structure
@@ -146,16 +151,30 @@ pytest tests/
 ```
 .
 ├── app/
-│   ├── __init__.py
-│   ├── main.py          # FastAPI application
-│   └── models.py        # Pydantic models
+│   ├── models/          # Pydantic models
+│   │   ├── common.py    # Shared models
+│   │   ├── person.py    # Person models
+│   │   ├── planet.py    # Planet models
+│   │   └── ai_insight.py # AI insight models
+│   ├── providers/       # Dependency injection
+│   │   ├── interfaces.py # Abstract interfaces
+│   │   ├── swapi_provider.py # SWAPI implementation
+│   │   └── ai_provider.py # AI service implementation
+│   ├── routes/          # API routes
+│   │   └── api.py       # Main API endpoints
+│   ├── services/        # Business logic
+│   │   └── swapi_service.py # SWAPI service layer
+│   └── main.py          # FastAPI application
+├── cli/
+│   ├── __init__.py      # CLI app setup
+│   └── commands.py      # CLI commands
 ├── tests/
-│   ├── __init__.py
 │   ├── test_api.py      # API tests
-│   └── test_cli.py      # CLI tests
-├── cli.py               # CLI client
+│   └── test_cli.py      # CLI tests with mocking
+├── run_tests.sh         # Test runner script
 ├── setup.py             # Package setup
-├── Dockerfile           # Docker configuration
+├── Dockerfile.api       # API Docker configuration
+├── Dockerfile.cli       # CLI Docker configuration
 ├── docker-compose.yml   # Docker Compose setup
 ├── requirements.txt     # Python dependencies
 ├── .env.example         # Environment template
