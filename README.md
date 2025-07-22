@@ -1,5 +1,7 @@
 # Star Wars CLI Application
 
+![Star Wars People](assets/starwars-people.png)
+
 A FastAPI backend service and CLI client for exploring the Star Wars API (SWAPI).
 
 ## Features
@@ -49,10 +51,6 @@ docker compose up --build
 4. Run CLI with Docker:
 
 ```bash
-# Option 1: Direct commands
-docker compose run --rm starwars-cli starwars people
-
-# Option 2: Start CLI service and exec
 docker compose --profile cli up -d
 docker compose exec starwars-cli starwars people
 ```
@@ -73,6 +71,7 @@ docker compose exec starwars-cli starwars people
 
 ### Examples
 
+#### Local Development (port 8000)
 ```bash
 # Get first page of people
 curl "http://localhost:8000/people"
@@ -85,6 +84,21 @@ curl "http://localhost:8000/planets?sort_by=name"
 
 # AI insight endpoint
 curl "http://localhost:8000/simulate-ai-insight?type=person&name=Luke"
+```
+
+#### Docker Deployment (port 6969)
+```bash
+# Get first page of people
+curl "http://localhost:6969/people"
+
+# Search for Luke
+curl "http://localhost:6969/people?search=luke"
+
+# Get planets sorted by name
+curl "http://localhost:6969/planets?sort_by=name"
+
+# AI insight endpoint
+curl "http://localhost:6969/simulate-ai-insight?type=person&name=Luke"
 ```
 
 ## CLI Usage
