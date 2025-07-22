@@ -1,0 +1,62 @@
+Back-End Developer Quiz
+Thank you very much for filling out this quiz to the best of your competencies. The
+purpose of this quiz is to evaluate your areas of expertise.
+If a question is not clear to you or using notations which you are not familiar with, feel
+free to rephrase the question or lay assumptions which help you in solving the problem.
+Good luck and thank you again for your time!
+
+Star Wars CLI Application
+Goal: Build and demonstrate a back-end service and a companion CLI client to explore
+the StarWars API (https://swapi.info/)
+AS A Star Wars fan
+I WANT a command-line interface to query and manipulate “People” and “Planets” data
+from SWAPI, SO THAT I can list, page through, search and sort data without ever
+opening a browser
+Acceptance Criteria
+ FastAPI Service
+o GET /people, GET /planets
+o Query params:
+ page (integer, default: 1) – returns 10 items per page.
+ search (string) – case-insensitive partial match on the name
+field.
+ sort_by (string) – allows sorting by a set of attributes of your
+choice (e.g., name, created, etc.).
+
+o Proxy SWAPI, apply pagination, filtering and sorting.
+ CLI Client
+o Build a Python CLI Client (e.g. using Typer or Click)
+o list people &amp; list planets with --page, --search, --sort-by, --order
+o Renders a simple table
+
+ Docs
+o README.md: setup/run FastAPI, install/use CLI, example commands
+ Delivery (Docker)
+o Dockerfile for the FastAPI service (exposes port 8000)
+o docker-compose.yml to launch the service on port 6969 (and optionally
+mount/run the CLI)
+
+Bonus (Optional)
+The requirements below are not mandatory. The fact of not doing them will not discard
+you from the hiring process neither reduce points. In case you decide to implement
+these requirements, they must work as expected, otherwise the ones not working will
+not be considered.
+- Mock AI endpoint: GET /simulate-ai-insight?type=person|planet&amp;name=&lt;…&gt;
+returns a fake “AI” description
+- Logging/Monitoring: track and log each search or sort request
+- Env vars: configure base URL, port, and other settings via environment
+variables (ready for Azure/AWS/GCP)
+- CLI UX: show loading spinners and error messages
+- Unit tests for pagination, filtering, sorting, CLI parsing (Optional)
+
+
+Definition of Done
+• The application works as defined in the Acceptance criteria.
+• Provide source code of the system.
+• Provide a clear README file about how to run and use the application.
+We will evaluate:
+• Follow Software Engineering principles.
+• UX/UI designs.
+• API performance.
+• Clean code.
+
+May the Force be with you!
