@@ -5,12 +5,9 @@ from rich.table import Table
 from typing import Optional
 import os
 
-app = typer.Typer()
 console = Console()
-
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
-@app.command()
 def people(
     page: int = typer.Option(1, "--page", "-p", help="Page number"),
     search: Optional[str] = typer.Option(None, "--search", "-s", help="Search by name"),
@@ -27,6 +24,7 @@ def people(
     try:
         with console.status("[bold green]Fetching people data...", spinner="dots"):
             response = httpx.get(f"{API_BASE_URL}/people", params=params)
+            response.raise_for_status()
             data = response.json()
         
         table = Table(title="Star Wars People")
@@ -46,10 +44,11 @@ def people(
         console.print(table)
         console.print(f"Page {page} of {(data.get('count', 0) + 9) // 10}")
         
+    except httpx.HTTPStatusError as e:
+        console.print(f"[red]HTTP Error {e.response.status_code}: {e.response.text}[/red]")
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
 
-@app.command()
 def planets(
     page: int = typer.Option(1, "--page", "-p", help="Page number"),
     search: Optional[str] = typer.Option(None, "--search", "-s", help="Search by name"),
@@ -66,6 +65,7 @@ def planets(
     try:
         with console.status("[bold green]Fetching planets data...", spinner="dots"):
             response = httpx.get(f"{API_BASE_URL}/planets", params=params)
+            response.raise_for_status()
             data = response.json()
         
         table = Table(title="Star Wars Planets")
@@ -85,8 +85,7 @@ def planets(
         console.print(table)
         console.print(f"Page {page} of {(data.get('count', 0) + 9) // 10}")
         
+    except httpx.HTTPStatusError as e:
+        console.print(f"[red]HTTP Error {e.response.status_code}: {e.response.text}[/red]")
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
-
-if __name__ == "__main__":
-    app()

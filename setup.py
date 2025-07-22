@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "starwars=cli:app",
+            "starwars=cli.__init__:app",
         ],
     },
 )
